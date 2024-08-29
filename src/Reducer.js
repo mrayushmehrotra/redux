@@ -1,22 +1,21 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-const increment = createAction("increment");
-const decrement = createAction("decrement");
-const incrementByVal = createAction("incrementByVal");
-
 const initialState = {
-  c: 0,
+  cart: [],
 };
 
-export const customReducer = createReducer(initialState, (builder) => {
+const addToCart = createAction("addToCart");
+const removeFromCart = createAction("removeFromCart");
+
+export const cartReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(increment, (state) => {
-      state.c += 1;
+    .addCase(addToCart, (state, action) => {
+      state.cart.push(action.payload);
     })
-    .addCase(incrementByVal, (state, action) => {
-      state.c += action.payload;
-    })
-    .addCase(decrement, (state) => {
-      state.c -= 1;
+
+    .addCase(removeFromCart, (state, action) => {
+      state.cart = state.cart.filter(
+        (item) => item.index !== action.payload.index,
+      );
     });
 });

@@ -2,30 +2,44 @@ import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
-  const { c } = useSelector((state) => state.custom);
-  const addBtn = () => {
+  const { cart } = useSelector((state) => state.custom);
+
+  const addBtn = (title, index) => {
     dispatch({
-      type: "increment",
+      type: "addToCart",
+      payload: {
+        title: title,
+        index: index,
+      },
     });
   };
-  const add10 = () => {
+  const subBtn = (title, index) => {
     dispatch({
-      type: "incrementByVal",
-      payload: 10,
+      type: "removeFromCart",
+      payload: {
+        title: title,
+        index: index,
+      },
     });
   };
-  const subBtn = () => {
-    dispatch({
-      type: "decrement",
-    });
-  };
-  const value = 20;
+  const dataArr = [{ title: "Shirt" }, { title: "T-Shirt" }];
   return (
     <div>
-      <h2>{c}</h2>
-      <button onClick={addBtn}>Increase</button>
-      <button onClick={subBtn}>Decrease</button>
-      <button onClick={add10}>Ben10</button>
+      <h2>Cart Items:</h2>
+      <ul>
+        {cart.map((item, index) => (
+          <li key={index}>
+            {item.title} (Index: {item.index})
+          </li>
+        ))}
+      </ul>
+      {dataArr.map((item, index) => (
+        <div key={index}>
+          <a>{item.title}</a>
+          <button onClick={() => addBtn(item.title, index)}>Add</button>
+          <button onClick={() => subBtn(item.title, index)}>Remove</button>
+        </div>
+      ))}
     </div>
   );
 }
